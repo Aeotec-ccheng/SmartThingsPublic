@@ -13,7 +13,7 @@
  *  Z-Wave Water/Temp/Light Sensor
  *
  *  Author: Chris
- *  Date: 2021-01-08
+ *  Date: 2021-01-12
  */
 
 metadata {
@@ -155,12 +155,12 @@ metadata {
 def installed() {
 	setCheckInterval()
 	def cmds = [
+		secure(zwave.sensorMultilevelV5.sensorMultilevelGet(sensorType: 0x0B)),
 		secure(zwave.sensorMultilevelV5.sensorMultilevelGet(sensorType: 0x01)),
 		secure(zwave.sensorMultilevelV5.sensorMultilevelGet(sensorType: 0x05)),
-        	secure(zwave.sensorMultilevelV5.sensorMultilevelGet(sensorType: 0x0B)),
 		secure(zwave.batteryV1.batteryGet())
 	]
-	response(cmds)
+	response(delayBetween(cmds, 1500))
 }
 
 def updated() {
@@ -268,7 +268,10 @@ def zwaveEvent(physicalgraph.zwave.commands.configurationv2.ConfigurationReport 
 			break
         	case 0x04:
 			state.parameter4 = cmd.scaledConfigurationValue
-			sendEvent(name: "parameter4", value: cmd.scaledConfigurationValue, displayed: false) 
+			if(state.parameter4 < 0) { 
+				state.parameter4 = state.parameter4 + 65536 
+			}
+			sendEvent(name: "parameter4", value: state.parameter4, displayed: false) 
 			break
         	default:
 			log.debug "Setting unknown parameter"
