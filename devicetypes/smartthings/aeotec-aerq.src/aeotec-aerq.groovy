@@ -10,7 +10,7 @@
  *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
  *  for the specific language governing permissions and limitations under the License.
  *
- *  Z-Wave Water/Temp/Light Sensor
+ *  Z-Wave Temp/Humidity Sensor
  *
  *  Author: Chris
  *  Date: 2021-01-12
