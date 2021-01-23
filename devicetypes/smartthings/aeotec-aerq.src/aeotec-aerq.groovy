@@ -13,7 +13,7 @@
  *  Z-Wave Temp/Humidity Sensor
  *
  *  Author: Chris
- *  Date: 2021-01-12
+ *  Date: 2021-01-22
  */
 
 metadata {
@@ -37,13 +37,36 @@ metadata {
 	}
 
 	simulator {
-    		//These aren't the droids you're looking for.
+		for (int i = 0; i <= 100; i += 20) {
+				status "temperature ${i}F": new physicalgraph.zwave.Zwave().securityV1.securityMessageEncapsulation().encapsulate(
+					new physicalgraph.zwave.Zwave().sensorMultilevelV2.sensorMultilevelReport(
+						scaledSensorValue: i, precision: 1, sensorType: 1, scale: 1)
+				).incomingMessage()
+			}
+
+		for (int i = 0; i <= 100; i += 20) {
+				status "humidity ${i}%": new physicalgraph.zwave.Zwave().securityV1.securityMessageEncapsulation().encapsulate(
+					new physicalgraph.zwave.Zwave().sensorMultilevelV2.sensorMultilevelReport(scaledSensorValue: i, sensorType: 5)
+				).incomingMessage()
+			}
+
+		for (int i in [0, 5, 10, 15, 50, 99, 100]) {
+				status "battery ${i}%": new physicalgraph.zwave.Zwave().securityV1.securityMessageEncapsulation().encapsulate(
+					new physicalgraph.zwave.Zwave().batteryV1.batteryReport(batteryLevel: i)
+				).incomingMessage()
+			}
+
+		status "low battery alert": new physicalgraph.zwave.Zwave().securityV1.securityMessageEncapsulation().encapsulate(
+				new physicalgraph.zwave.Zwave().batteryV1.batteryReport(batteryLevel: 255)
+			).incomingMessage()
+
+		status "wake up": "command: 8407, payload: "
 	}
 
 	tiles(scale: 2) {
-		multiAttributeTile(name:"temperature", type:"generic", width:3, height:2, canChangeIcon: true) {
+		multiAttributeTile(name:"temperature", type:"generic", width:6, height:4, canChangeIcon: true) {
 			tileAttribute("device.temperature", key: "PRIMARY_CONTROL") {
-				attributeState("temperature", label: '${currentValue}°', icon: "st.alarm.temperature.normal",
+				attributeState("temperature", label: '${currentValue}°', 
                     			backgroundColors: [
 					    // Celsius
 					    [value: 0, color: "#153591"],
@@ -64,47 +87,40 @@ metadata {
                     			]
 				)
 			}
-		
-			tileAttribute("device.humidity", key: "SECONDARY_CONTROL") {
-					attributeState("humidity", label: '${currentValue}', unit: "%")
-			}
+        	}
         
-       		}
-	}
-        
-	tiles(scale: 1) {
-		multiAttributeTile(name:"dewpoint", type:"generic", width:3, height:2, canChangeIcon: true) {
-			tileAttribute("device.dewpoint", key: "SECONDARY_CONTROL") {
-				attributeState("dewpoint", label: '${currentValue}°', icon: "st.alarm.temperature.normal",
-					backgroundColors: [
-						// Celsius
-						[value: 0, color: "#153591"],
-						[value: 7, color: "#1e9cbb"],
-						[value: 15, color: "#90d2a7"],
-						[value: 23, color: "#44b621"],
-						[value: 28, color: "#f1d801"],
-						[value: 35, color: "#d04e00"],
-						[value: 37, color: "#bc2323"],
-						// Fahrenheit
-						[value: 40, color: "#153591"],
-						[value: 44, color: "#1e9cbb"],
-						[value: 59, color: "#90d2a7"],
-						[value: 74, color: "#44b621"],
-						[value: 84, color: "#f1d801"],
-						[value: 95, color: "#d04e00"],
-						[value: 96, color: "#bc2323"]
-					]
-				)
-			}
+        	valueTile("humidity", "device.humidity", inactiveLabel: false, width: 2, height: 2) {
+				state "humidity", label: '${currentValue}% humidity', unit: "%"
 		}
-	}
         
-	valueTile("battery", "device.battery", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-		state "battery", label: '${currentValue}% battery', unit: ""
-	}
+        	valueTile("dewpoint", "device.dewpoint", inactiveLabel: false, width: 2, height: 2) {
+			state "dewpoint", label: '${currentValue}°',
+				backgroundColors: [
+					[value: 0, color: "#153591"],
+					[value: 7, color: "#1e9cbb"],
+					[value: 15, color: "#90d2a7"],
+					[value: 23, color: "#44b621"],
+					[value: 28, color: "#f1d801"],
+					[value: 35, color: "#d04e00"],
+					[value: 37, color: "#bc2323"],
+					// Fahrenheit
+					[value: 40, color: "#153591"],
+					[value: 44, color: "#1e9cbb"],
+					[value: 59, color: "#90d2a7"],
+					[value: 74, color: "#44b621"],
+					[value: 84, color: "#f1d801"],
+					[value: 95, color: "#d04e00"],
+					[value: 96, color: "#bc2323"]
+				]
+		}
+        
+        	valueTile("battery", "device.battery", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
+			state "battery", label: '${currentValue}% battery', unit: ""
+		}
 
-	main "temperature"
-	details(["temperature", "humidity", "dewpoint", "battery"])
+		main "temperature"
+		details(["temperature", "humidity", "dewpoint", "battery"])
+	}
         
 	preferences {
 		section {
