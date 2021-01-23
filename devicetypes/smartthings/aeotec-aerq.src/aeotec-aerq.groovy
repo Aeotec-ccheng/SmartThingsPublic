@@ -31,8 +31,8 @@ metadata {
 		attribute "parameter2", "number"
 		attribute "parameter4", "number"
         
-		fingerprint mfr:"0371", prod:"0002", model:"0009", deviceJoinName: "Temperature Humidity Sensor", mnmn: "SmartThings", vid: "aeotec-water-sensor-7-pro" //EU //aerQ Sensor
-		fingerprint mfr:"0371", prod:"0102", model:"0009", deviceJoinName: "Temperature Humidity Sensor", mnmn: "SmartThings", vid: "aeotec-water-sensor-7-pro" //US //aerQ Sensor
+		fingerprint mfr:"0371", prod:"0002", model:"0009", deviceJoinName: "Temperature Humidity Sensor", mnmn: "SmartThings", vid: "generic-humidity" //EU //aerQ Sensor
+		fingerprint mfr:"0371", prod:"0102", model:"0009", deviceJoinName: "Temperature Humidity Sensor", mnmn: "SmartThings", vid: "generic-humidity" //US //aerQ Sensor
 
 	}
 
