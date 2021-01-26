@@ -254,7 +254,7 @@ def zwaveEvent(physicalgraph.zwave.commands.sensormultilevelv5.SensorMultilevelR
 			map.name = "temperature"
 			map.value = convertTemperatureIfNeeded(cmd.scaledSensorValue, cmd.scale == 1 ? "F" : "C", cmd.precision)
 			map.unit = cmd.scale == 1 ? "F" : "C"
-			break;
+			break
 		case 0x05:
 			map.name = "humidity"
 			map.value = cmd.scaledSensorValue.toInteger()
