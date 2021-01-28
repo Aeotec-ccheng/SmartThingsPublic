@@ -13,7 +13,7 @@
  *  Z-Wave Temp/Humidity Sensor
  *
  *  Author: Chris
- *  Date: 2021-01-22
+ *  Date: 2021-01-27
  */
 
 metadata {
