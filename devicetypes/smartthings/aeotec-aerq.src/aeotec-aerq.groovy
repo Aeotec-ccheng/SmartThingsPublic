@@ -17,7 +17,7 @@
  */
 
 metadata {
-	definition(name: "Aeotec aerQ Sensor", namespace: "smartthings", author: "SmartThings", ocfDeviceType: "oic.d.thermostat", minHubCoreVersion: '000.017.0012', executeCommandsLocally: false) {
+	definition(name: "Aeotec aerQ Sensor", namespace: "aeotec", author: "Aeotec", ocfDeviceType: "oic.d.thermostat", minHubCoreVersion: '000.017.0012', executeCommandsLocally: false, mnmn: "0ALy", vid: "dfc32c7e-4fad-30a7-9806-a1e123a8b4a4") {
 		capability "Sensor"
 		capability "Battery"
 		capability "Health Check"
@@ -31,8 +31,8 @@ metadata {
 		attribute "parameter2", "number"
 		attribute "parameter4", "number"
         
-		fingerprint mfr:"0371", prod:"0002", model:"0009", deviceJoinName: "Temperature Humidity Sensor", mnmn: "SmartThings", vid: "generic-humidity" //EU //aerQ Sensor
-		fingerprint mfr:"0371", prod:"0102", model:"0009", deviceJoinName: "Temperature Humidity Sensor", mnmn: "SmartThings", vid: "generic-humidity" //US //aerQ Sensor
+		fingerprint mfr:"0371", prod:"0002", model:"0009", deviceJoinName: "Temperature Humidity Sensor", mnmn: "0ALy", vid: "dfc32c7e-4fad-30a7-9806-a1e123a8b4a4" //EU //aerQ Sensor
+		fingerprint mfr:"0371", prod:"0102", model:"0009", deviceJoinName: "Temperature Humidity Sensor", mnmn: "0ALy", vid: "dfc32c7e-4fad-30a7-9806-a1e123a8b4a4" //US //aerQ Sensor
 
 	}
 
@@ -254,7 +254,7 @@ def zwaveEvent(physicalgraph.zwave.commands.sensormultilevelv5.SensorMultilevelR
 			map.name = "temperature"
 			map.value = convertTemperatureIfNeeded(cmd.scaledSensorValue, cmd.scale == 1 ? "F" : "C", cmd.precision)
 			map.unit = cmd.scale == 1 ? "F" : "C"
-			break
+			break;
 		case 0x05:
 			map.name = "humidity"
 			map.value = cmd.scaledSensorValue.toInteger()
