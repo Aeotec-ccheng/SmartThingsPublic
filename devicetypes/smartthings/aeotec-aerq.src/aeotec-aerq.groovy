@@ -125,13 +125,13 @@ metadata {
 	preferences {
 		section {
 			input(
-				title: "Threshold settings - These settings are checked once every 15 minutes, if enough change to temperature or humidity to send a report. Operates at the same time as Periodic reports.",
+				title: "Threshold settings - These settings are checked once every 15 minutes, if there enough change to temperature or humidity send a report, else aerQ will wait another 15 minutes to check. Operates at the same time as Periodic reports.",
 				type: "paragraph",
 				element: "paragraph"
 			)
 			input(
 				title: "1. Min Temperature Report Value:",
-				description: "Minimum required temperature change to induce report (value is 1/10 scale).",
+				description: "Minimum required temperature change to induce report (value is 1/10 scale, (ie. value 5 = 0.5 degree)).",
 				name: "thresholdTemperatureValue",
 				type: "number",
 				range: "1..100",
@@ -139,14 +139,14 @@ metadata {
 			)
             		input(
 				title: "2. Min Humidity Report Value:",
-				description: "Minimum required temperature change to induce report.",
+				description: "Minimum required humidity change to induce report.",
 				name: "thresholdHumidityValue",
 				type: "number",
 				range: "1..20",
 				defaultValue: 5
 			)  
 			input(
-				title: "Periodic setting - Determines how often both temperature and humidity are reported. This setting operates at the same time as threshold reports.",
+				title: "Periodic setting - Determines how often both temperature and humidity are reported regardless of value change. This setting operates at the same time as threshold reports.",
 				type: "paragraph",
 				element: "paragraph"
 			)
@@ -159,7 +159,7 @@ metadata {
 				defaultValue: 43200
 			)
 			input(
-				title: "All configurations will take place after aerQ Sensor has been woken up. You can wait up to an hour or immediately wakeup aerQ by tapping its button.",
+				title: "All configurations will take place after aerQ Sensor has been woken up. You can wait up to a few hours or immediately wakeup aerQ by tapping its button.",
 				type: "paragraph",
 				element: "paragraph"
 			)
