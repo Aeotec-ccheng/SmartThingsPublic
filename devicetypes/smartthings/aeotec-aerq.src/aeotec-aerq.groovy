@@ -11,9 +11,11 @@
  *  for the specific language governing permissions and limitations under the License.
  *
  *  Z-Wave Temp/Humidity Sensor
+ *  BinarySensorReport
+ *  
  *
  *  Author: Chris
- *  Date: 2021-01-27
+ *  Date: 2021-01-28
  */
 
 metadata {
@@ -30,6 +32,7 @@ metadata {
 		attribute "parameter1", "number"
 		attribute "parameter2", "number"
 		attribute "parameter4", "number"
+        	attribute "parameter64", "number"
         
 		fingerprint mfr:"0371", prod:"0002", model:"0009", deviceJoinName: "Temperature Humidity Sensor", mnmn: "0ALy", vid: "dfc32c7e-4fad-30a7-9806-a1e123a8b4a4" //EU //aerQ Sensor
 		fingerprint mfr:"0371", prod:"0102", model:"0009", deviceJoinName: "Temperature Humidity Sensor", mnmn: "0ALy", vid: "dfc32c7e-4fad-30a7-9806-a1e123a8b4a4" //US //aerQ Sensor
@@ -38,27 +41,27 @@ metadata {
 
 	simulator {
 		for (int i = 0; i <= 100; i += 20) {
-				status "temperature ${i}F": new physicalgraph.zwave.Zwave().securityV1.securityMessageEncapsulation().encapsulate(
-					new physicalgraph.zwave.Zwave().sensorMultilevelV2.sensorMultilevelReport(
-						scaledSensorValue: i, precision: 1, sensorType: 1, scale: 1)
-				).incomingMessage()
-			}
+			status "temperature ${i}F": new physicalgraph.zwave.Zwave().securityV1.securityMessageEncapsulation().encapsulate(
+				new physicalgraph.zwave.Zwave().sensorMultilevelV2.sensorMultilevelReport(
+					scaledSensorValue: i, precision: 1, sensorType: 1, scale: 1)
+			).incomingMessage()
+		}
 
 		for (int i = 0; i <= 100; i += 20) {
-				status "humidity ${i}%": new physicalgraph.zwave.Zwave().securityV1.securityMessageEncapsulation().encapsulate(
-					new physicalgraph.zwave.Zwave().sensorMultilevelV2.sensorMultilevelReport(scaledSensorValue: i, sensorType: 5)
-				).incomingMessage()
-			}
+			status "humidity ${i}%": new physicalgraph.zwave.Zwave().securityV1.securityMessageEncapsulation().encapsulate(
+				new physicalgraph.zwave.Zwave().sensorMultilevelV2.sensorMultilevelReport(scaledSensorValue: i, sensorType: 5)
+			).incomingMessage()
+		}
 
 		for (int i in [0, 5, 10, 15, 50, 99, 100]) {
-				status "battery ${i}%": new physicalgraph.zwave.Zwave().securityV1.securityMessageEncapsulation().encapsulate(
-					new physicalgraph.zwave.Zwave().batteryV1.batteryReport(batteryLevel: i)
-				).incomingMessage()
-			}
+			status "battery ${i}%": new physicalgraph.zwave.Zwave().securityV1.securityMessageEncapsulation().encapsulate(
+				new physicalgraph.zwave.Zwave().batteryV1.batteryReport(batteryLevel: i)
+			).incomingMessage()
+		}
 
 		status "low battery alert": new physicalgraph.zwave.Zwave().securityV1.securityMessageEncapsulation().encapsulate(
-				new physicalgraph.zwave.Zwave().batteryV1.batteryReport(batteryLevel: 255)
-			).incomingMessage()
+			new physicalgraph.zwave.Zwave().batteryV1.batteryReport(batteryLevel: 255)
+		).incomingMessage()
 
 		status "wake up": "command: 8407, payload: "
 	}
@@ -125,13 +128,13 @@ metadata {
 	preferences {
 		section {
 			input(
-				title: "Threshold settings - These settings are checked once every 15 minutes, if there enough change to temperature or humidity send a report, else aerQ will wait another 15 minutes to check. Operates at the same time as Periodic reports.",
+				title: "Threshold settings - These settings are checked once every 15 minutes, if enough change to temperature or humidity to send a report. Operates at the same time as Periodic reports.",
 				type: "paragraph",
 				element: "paragraph"
 			)
 			input(
 				title: "1. Min Temperature Report Value:",
-				description: "Minimum required temperature change to induce report (value is 1/10 scale, (ie. value 5 = 0.5 degree)).",
+				description: "Minimum required temperature change to induce report (value is 1/10 scale).",
 				name: "thresholdTemperatureValue",
 				type: "number",
 				range: "1..100",
@@ -139,14 +142,14 @@ metadata {
 			)
             		input(
 				title: "2. Min Humidity Report Value:",
-				description: "Minimum required humidity change to induce report.",
+				description: "Minimum required temperature change to induce report.",
 				name: "thresholdHumidityValue",
 				type: "number",
 				range: "1..20",
 				defaultValue: 5
 			)  
 			input(
-				title: "Periodic setting - Determines how often both temperature and humidity are reported regardless of value change. This setting operates at the same time as threshold reports.",
+				title: "Periodic setting - Determines how often both temperature and humidity are reported. This setting operates at the same time as threshold reports.",
 				type: "paragraph",
 				element: "paragraph"
 			)
@@ -158,10 +161,41 @@ metadata {
 				range: "900..65535",
 				defaultValue: 43200
 			)
-			input(
-				title: "All configurations will take place after aerQ Sensor has been woken up. You can wait up to a few hours or immediately wakeup aerQ by tapping its button.",
+            		input(
+				title: "Temperature Scale setting - This setting will take 1 wake up to set in properly, then the following temperature sensor report after that wakeup will change the temperature unit and value appropriately. If you want to see immediate changes, wake up aerQ Sensor a few times.",
 				type: "paragraph",
 				element: "paragraph"
+			)
+            		input(
+				title: "64. Temperature Scale:",
+				description: "Set the temperature scale unit report in C or F (US defaults to F, EU defaults to C)",
+				name: "temperatureScaleSetting",
+				type: "number",
+				range: "1..2",
+			)
+			input(
+				title: "PARAMETERS END - All configurations will take place after aerQ Sensor has been woken up. You can wait up to 12 hours or immediately wakeup aerQ by tapping its button.",
+				type: "paragraph",
+				element: "paragraph"
+			)
+            		input(
+				title: "OFFSET Sensors - Use these settings below to offset humidity or temperature. The values will change upon the next temperature or humidity report.",
+				type: "paragraph",
+				element: "paragraph"
+			)
+            		input(
+				title: "a. Temperature offset:",
+				description: "Offset the aerQ reported value for temperature.",
+				name: "offsetTemperature",
+				type: "decimal",
+				defaultValue: 0
+			)
+            		input(
+				title: "b. Humidity offset:",
+				description: "Offset the aerQ reported value for humidity.",
+				name: "offsetHumidity",
+				type: "number",
+				defaultValue: 0
 			)
 		}
 	}
@@ -225,6 +259,10 @@ def zwaveEvent(physicalgraph.zwave.commands.wakeupv1.WakeUpNotification cmd) {
 			result << response(secure(zwave.configurationV1.configurationSet(parameterNumber: 4, size: 2, scaledConfigurationValue: periodicReportValue)))
 			result << response(secure(zwave.configurationV1.configurationGet(parameterNumber: 4)))
 		}  
+        	if (temperatureScaleSetting != state.parameter64 && temperatureScaleSetting) {
+        		result << response(secure(zwave.configurationV1.configurationSet(parameterNumber: 64, size: 1, scaledConfigurationValue: temperatureScaleSetting)))
+			result << response(secure(zwave.configurationV1.configurationGet(parameterNumber: 64)))
+        	}
 	}
 
 	if (!state.lastbat || (new Date().time) - state.lastbat > 53 * 60 * 60 * 1000) {
@@ -251,22 +289,35 @@ def zwaveEvent(physicalgraph.zwave.commands.sensormultilevelv5.SensorMultilevelR
 	def map = [:]
 	switch (cmd.sensorType) {
 		case 0x01:
+			def finalTempValue 
+			if (offsetTemperature){
+				finalTempValue = cmd.scaledSensorValue
+				finalTempValue = finalTempValue + offsetTemperature
+			} else {
+				finalTempValue = cmd.scaledSensorValue
+			}
 			map.name = "temperature"
-			map.value = convertTemperatureIfNeeded(cmd.scaledSensorValue, cmd.scale == 1 ? "F" : "C", cmd.precision)
+			map.value = finalTempValue
 			map.unit = cmd.scale == 1 ? "F" : "C"
-			break;
+		break;
 		case 0x05:
+			def finalHumValue
+			if (offsetHumidity) {
+				finalHumValue = cmd.scaledSensorValue.toInteger() + offsetHumidity.toInteger()
+			} else {
+				finalHumValue = cmd.scaledSensorValue.toInteger()
+			}
 			map.name = "humidity"
-			map.value = cmd.scaledSensorValue.toInteger()
+			map.value = finalHumValue
 			map.unit = "%"
 			break
-        	case 0x0B:
+		case 0x0B:
 			map.name = "dewpoint"
-			map.value = convertTemperatureIfNeeded(cmd.scaledSensorValue, cmd.scale == 1 ? "F" : "C", cmd.precision)
+			map.value = cmd.scaledSensorValue
 			map.unit = cmd.scale == 1 ? "F" : "C"
 			break
-        	default:
-        		map.descriptionText = cmd.toString()
+		default:
+			map.descriptionText = cmd.toString()
 			break
 	}
 	createEvent(map)
@@ -274,22 +325,26 @@ def zwaveEvent(physicalgraph.zwave.commands.sensormultilevelv5.SensorMultilevelR
 
 def zwaveEvent(physicalgraph.zwave.commands.configurationv2.ConfigurationReport cmd) {
 	switch (cmd.parameterNumber) {
-    		case 0x01:
+		case 0x01:
 			state.parameter1 = cmd.scaledConfigurationValue
 			sendEvent(name: "parameter1", value: cmd.scaledConfigurationValue, displayed: false) 
 			break
-        	case 0x02:
+		case 0x02:
 			state.parameter2 = cmd.scaledConfigurationValue
 			sendEvent(name: "parameter2", value: cmd.scaledConfigurationValue, displayed: false) 
 			break
-        	case 0x04:
+		case 0x04:
 			state.parameter4 = cmd.scaledConfigurationValue
 			if(state.parameter4 < 0) { 
 				state.parameter4 = state.parameter4 + 65536 
 			}
 			sendEvent(name: "parameter4", value: state.parameter4, displayed: false) 
 			break
-        	default:
+		case 0x40:
+			state.parameter64 = cmd.scaledConfigurationValue
+			sendEvent(name: "parameter64", value: state.parameter64, displayed: false) 
+			break
+		default:
 			log.debug "Setting unknown parameter"
 			break
 	}
@@ -304,7 +359,7 @@ def zwaveEvent(physicalgraph.zwave.Command cmd) {
 
 def checkParameterValues() {
 	//if parameter settings fail somehow, wakeup can cause parameter settings to update again the next time. When all settings are true, then stop parameter updates the next time. 
-	if (state.parameter1 == thresholdTemperatureValue && state.parameter2 == thresholdHumidityValue && state.parameter4 == periodicReportValue) {
+	if (state.parameter1 == thresholdTemperatureValue && state.parameter2 == thresholdHumidityValue && state.parameter4 == periodicReportValue && state.parameter64 == temperatureScaleSetting) {
 		sendEvent(name: "updateNeeded", value: "false", displayed: false) 
 	} 
 }
