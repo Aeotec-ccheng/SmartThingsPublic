@@ -13,17 +13,18 @@
  *  Z-Wave Temp/Humidity Sensor
  *
  *  Author: Chris
- *  Date: 2021-01-28
+ *  Date: 2021-01-29
  */
 
 metadata {
-	definition(name: "Aeotec aerQ Sensor", namespace: "aeotec", author: "Aeotec", ocfDeviceType: "oic.d.thermostat", minHubCoreVersion: '000.017.0012', executeCommandsLocally: false, mnmn: "0ALy", vid: "dfc32c7e-4fad-30a7-9806-a1e123a8b4a4") {
+	definition(name: "Aeotec aerQ Sensor", namespace: "aeotec", author: "Aeotec", ocfDeviceType: "oic.d.thermostat", executeCommandsLocally: false, mnmn: "0ALy", vid: "f680ed17-d31d-3aef-a888-1a7ffbceb1cc") {
 		capability "Sensor"
 		capability "Battery"
 		capability "Health Check"
 		capability "Temperature Measurement"
 		capability "Relative Humidity Measurement"
 		capability "Configuration"
+        	capability "forgottenreturn26666.dewpointMeasurement"
         
 		attribute "dewpoint", "number"
 		attribute "updateNeeded", "string"
@@ -32,8 +33,8 @@ metadata {
 		attribute "parameter4", "number"
         	attribute "parameter64", "number"
         
-		fingerprint mfr:"0371", prod:"0002", model:"0009", deviceJoinName: "Temperature Humidity Sensor", mnmn: "0ALy", vid: "dfc32c7e-4fad-30a7-9806-a1e123a8b4a4" //EU //aerQ Sensor
-		fingerprint mfr:"0371", prod:"0102", model:"0009", deviceJoinName: "Temperature Humidity Sensor", mnmn: "0ALy", vid: "dfc32c7e-4fad-30a7-9806-a1e123a8b4a4" //US //aerQ Sensor
+		fingerprint mfr:"0371", prod:"0002", model:"0009", deviceJoinName: "Temperature Humidity Sensor", mnmn: "0ALy", vid: "f680ed17-d31d-3aef-a888-1a7ffbceb1cc" //EU //aerQ Sensor
+		fingerprint mfr:"0371", prod:"0102", model:"0009", deviceJoinName: "Temperature Humidity Sensor", mnmn: "0ALy", vid: "f680ed17-d31d-3aef-a888-1a7ffbceb1cc" //US //aerQ Sensor
 
 	}
 
@@ -166,7 +167,7 @@ metadata {
 			)
             		input(
 				title: "64. Temperature Scale:",
-				description: "Set the temperature scale unit report in C or F (1 = C, 2 = F)",
+				description: "Set the temperature scale unit report in C or F (US defaults to F, EU defaults to C)",
 				name: "temperatureScaleSetting",
 				type: "number",
 				range: "1..2",
