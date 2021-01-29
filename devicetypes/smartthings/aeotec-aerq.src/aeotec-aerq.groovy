@@ -166,7 +166,7 @@ metadata {
 			)
             		input(
 				title: "64. Temperature Scale:",
-				description: "Set the temperature scale unit report in C or F (US defaults to F, EU defaults to C)",
+				description: "Set the temperature scale unit report in C or F (1 = C, 2 = F)",
 				name: "temperatureScaleSetting",
 				type: "number",
 				range: "1..2",
