@@ -11,8 +11,6 @@
  *  for the specific language governing permissions and limitations under the License.
  *
  *  Z-Wave Temp/Humidity Sensor
- *  BinarySensorReport
- *  
  *
  *  Author: Chris
  *  Date: 2021-01-28
