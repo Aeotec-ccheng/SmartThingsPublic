@@ -161,7 +161,7 @@ metadata {
 				defaultValue: 43200
 			)
             		input(
-				title: "Temperature Scale setting - This setting will take 1 wake up to set in properly, then the following temperature sensor report after that wakeup will change the temperature unit and value appropriately. If you want to see immediate changes, wake up aerQ Sensor a few times.",
+				title: "Temperature Scale setting - This setting will take 1 wake up to set in properly, then the following temperature sensor report after that wakeup will change the temperature unit and value appropriately. If you want to see immediate changes, wake up aerQ Sensor a few times. (1 = Celcius, 2 = Fahrenheit)",
 				type: "paragraph",
 				element: "paragraph"
 			)
