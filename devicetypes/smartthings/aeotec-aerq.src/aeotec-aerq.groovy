@@ -161,13 +161,13 @@ metadata {
 				defaultValue: 43200
 			)
             		input(
-				title: "Temperature Scale setting - This setting will take 1 wake up to set in properly, then the following temperature sensor report after that wakeup will change the temperature unit and value appropriately. If you want to see immediate changes, wake up aerQ Sensor a few times. (1 = Celcius, 2 = Fahrenheit)",
+				title: "Temperature Scale setting - This setting will take 1 wake up to set in properly, then the following temperature sensor report after that wakeup will change the temperature unit and value appropriately. If you want to see immediate changes, wake up aerQ Sensor a few times.",
 				type: "paragraph",
 				element: "paragraph"
 			)
             		input(
 				title: "64. Temperature Scale:",
-				description: "Set the temperature scale unit report in C or F (US defaults to F, EU defaults to C)",
+				description: "Set the temperature scale unit report in C or F (1 = Celcius, 2 = Fahrenheit)",
 				name: "temperatureScaleSetting",
 				type: "number",
 				range: "1..2",
