@@ -4,7 +4,7 @@ Cloud Execution
 
 Works with: 
 
-* [Aeon Labs MultiSensor 7](https://www.smartthings.com/products/aeon-labs-multisensor-6)
+* Aeon Labs MultiSensor 7
 
 ## Table of contents
 
