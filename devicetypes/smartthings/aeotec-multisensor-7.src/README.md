@@ -26,8 +26,8 @@ Works with:
 
 ## Device Health
 
-Aeon Labs MultiSensor 7 is polled by the hub.
-Aeon MultiSensor reports in once every hour.
+Aeotec MultiSensor 7 is polled by the hub.
+Aeotec MultiSensor checks threshold values every 4 minutes to determine if it should report a specific sensor or if no change, it will report the sensor value once per hour.
 
 * __122min__ checkInterval
 
@@ -35,5 +35,3 @@ Aeon MultiSensor reports in once every hour.
 
 If the device doesn't pair when trying from the SmartThings mobile app, it is possible that the device is out of range.
 Pairing needs to be tried again by placing the device closer to the hub.
-Instructions related to pairing, resetting and removing the device from SmartThings can be found in the following link:
-* [Aeon Labs MultiSensor 6 Troubleshooting Tips](https://support.smartthings.com/hc/en-us/articles/206157226)
