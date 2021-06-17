@@ -181,24 +181,24 @@ private getSupportedButtonValues() {
 
 private getButtonAttributesMap() {
     if (isEverspring()) {[
-            0: "pushed",
-            2: "held",
-            3: "double"
+	0: "pushed",
+	2: "held",
+	3: "double"
     ]} else if (isWallMote7()) {[
-            0: "pushed",
-            2: "held",
-            3: "double",
-			4: "pushed_3x",
-			5: "pushed_4x",
-			6: "pushed_5x"
+	0: "pushed",
+	2: "held",
+	3: "double",
+	4: "pushed_3x",
+	5: "pushed_4x",
+	6: "pushed_5x"
     ]} else {[
-            0: "pushed",
-            1: "held"
+	0: "pushed",
+	1: "held"
     ]}
 }
 
 private isEverspring() {
-    zwaveInfo.model.equals("0003")
+	zwaveInfo.model.equals("0003")
 }
 
 private isWallMote7() {
