@@ -167,7 +167,7 @@ metadata {
 			)
             		input(
 				title: "64. Temperature Scale:",
-				description: "Set the temperature scale unit report in C or F (1 = Celcius, 2 = Fahrenheit)",
+				description: "Set the temperature scale unit report in C or F (1 = Celsius, 2 = Fahrenheit)",
 				name: "temperatureScaleSetting",
 				type: "number",
 				range: "1..2",
